@@ -76,8 +76,6 @@ async def predict_delay(data: FlightData):
     # Возврат результата
     return {"predicted_delay": float(prediction[0])}
 
-app = FastAPI()
-
 # Разрешаем доступ с вашего локального хоста
 origins = [
     "http://localhost",       # Для локальных запросов
