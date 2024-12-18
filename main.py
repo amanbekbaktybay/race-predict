@@ -1,8 +1,10 @@
-from fastapi import FastAPI
 from pydantic import BaseModel
 from joblib import load
 import pandas as pd
 import numpy as np
+import os
+import uvicorn
+from fastapi import FastAPI
 
 # Загрузка модели и LabelEncoders
 model = load("xgb_model_compressed.joblib")
@@ -72,3 +74,13 @@ async def predict_delay(data: FlightData):
 
     # Возврат результата
     return {"predicted_delay": float(prediction[0])}
+
+# Example endpoint
+@app.get("/")
+def read_root():
+    return {"message": "Server is running!"}
+
+# Dynamically read the port from environment
+if __name__ == "__main__":
+    port = int(os.environ.get("PORT", 8000))  # Default to 8000 if PORT is not set
+    uvicorn.run(app, host="0.0.0.0", port=port)
