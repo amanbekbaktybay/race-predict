@@ -5,6 +5,7 @@ import numpy as np
 import os
 import uvicorn
 from fastapi import FastAPI
+from fastapi.middleware.cors import CORSMiddleware
 
 # Загрузка модели и LabelEncoders
 model = load("xgb_model_compressed.joblib")
@@ -74,6 +75,22 @@ async def predict_delay(data: FlightData):
 
     # Возврат результата
     return {"predicted_delay": float(prediction[0])}
+
+app = FastAPI()
+
+# Разрешаем доступ с вашего локального хоста
+origins = [
+    "http://localhost",       # Для локальных запросов
+    "http://localhost:5173/"
+]
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=origins,
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 # Example endpoint
 @app.get("/")
