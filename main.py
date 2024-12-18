@@ -81,7 +81,8 @@ app = FastAPI()
 # Разрешаем доступ с вашего локального хоста
 origins = [
     "http://localhost",       # Для локальных запросов
-    "http://localhost:5173/"
+    "http://localhost:5173/",
+    "*"
 ]
 
 app.add_middleware(
